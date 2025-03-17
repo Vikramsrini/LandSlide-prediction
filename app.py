@@ -1,19 +1,49 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS  # Import CORS
+import joblib
+import numpy as np
 
+# Initialize Flask app
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
 
-@app.route('/predict', methods=['POST'])
+# Enable CORS for all routes
+CORS(app)  # This allows requests from any origin. For production, restrict it to specific domains.
+
+# Load the trained model
+model = joblib.load("landslide_prediction_model.pkl")
+
+# Define prediction endpoint
+@app.route("/predict", methods=["POST"])
 def predict():
-    data = request.get_json()
-    # Your prediction logic here
-    prediction = 1  # Example prediction
-    probability = 0.85  # Example probability
+    # Get data from request
+    data = request.json
+
+    # Extract features
+    rainfall = data.get("rainfall")
+    soil_moisture = data.get("soil_moisture")
+    slope_angle = data.get("slope_angle")
+    vibration = data.get("vibration")
+
+    # Validate input data
+    if None in (rainfall, soil_moisture, slope_angle, vibration):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    # Preprocess data
+    input_data = np.array([[rainfall, soil_moisture, slope_angle, vibration]])
+
+    # Make prediction
+    try:
+        prediction = model.predict(input_data)
+        probability = model.predict_proba(input_data)[0][1]
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    # Return result
     return jsonify({
-        'prediction': prediction,
-        'probability': probability
+        "prediction": int(prediction[0]),
+        "probability": float(probability)
     })
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Run the app
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
