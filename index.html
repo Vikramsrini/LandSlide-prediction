@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landslide Prediction</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #777679, #121212); /* Gradient background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px); /* Glass morphism effect */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 800px; /* Increased width */
+            width: 100%;
+            display: flex; /* Flexbox layout */
+            gap: 2rem; /* Space between description and form */
+            animation: fadeIn 1s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Light border for glass effect */
+        }
+
+        .description {
+            flex: 1; /* Takes up 50% of the container */
+            padding-right: 1rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.2); /* Divider line */
+        }
+
+        .description h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #fff;
+            animation: slideIn 1s ease-in-out;
+        }
+
+        .description p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #fff;
+        }
+
+        .form-section {
+            flex: 1; /* Takes up 50% of the container */
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent input background */
+            color: #fff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #ff6f61; /* Coral color for focus */
+            box-shadow: 0 0 8px rgba(255, 111, 97, 0.3);
+            outline: none;
+        }
+
+        /* Button Styles */
+        button {
+            padding: 12px 24px;
+            background-color: #ad7833; /* Coral color */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #464343; /* Darker coral on hover */
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Result Styles */
+        .result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            animation: fadeIn 0.5s ease-in-out;
+            color: #fff;
+        }
+
+        .result strong {
+            color: #c6a554; /* Coral color for strong text */
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Hover Effects */
+        .form-group:hover label {
+            color: #ffa361; /* Coral color on hover */
+            transition: color 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column; /* Stack description and form vertically on small screens */
+                padding: 1rem;
+                gap: 1rem; /* Reduce gap for smaller screens */
+            }
+
+            .description {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                padding-bottom: 1rem;
+                margin-bottom: 1rem;
+                padding-right: 0; /* Remove padding for smaller screens */
+            }
+
+            .description h1 {
+                font-size: 1.5rem; /* Smaller font size for mobile */
+            }
+
+            .description p {
+                font-size: 0.9rem; /* Smaller font size for mobile */
+            }
+
+            .form-group {
+                margin-bottom: 1rem; /* Reduce margin for smaller screens */
+            }
+
+            input[type="number"] {
+                font-size: 0.9rem; /* Smaller font size for mobile */
+                padding: 8px; /* Smaller padding for mobile */
+            }
+
+            button {
+                padding: 10px 20px; /* Smaller button for mobile */
+                font-size: 0.9rem; /* Smaller font size for mobile */
+            }
+
+            .result {
+                font-size: 1rem; /* Smaller font size for mobile */
+                padding: 0.8rem; /* Smaller padding for mobile */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem; /* Even smaller padding for very small screens */
+            }
+
+            .description h1 {
+                font-size: 1.2rem; /* Smaller font size for very small screens */
+            }
+
+            .description p {
+                font-size: 0.8rem; /* Smaller font size for very small screens */
+            }
+
+            input[type="number"] {
+                font-size: 0.8rem; /* Smaller font size for very small screens */
+                padding: 6px; /* Smaller padding for very small screens */
+            }
+
+            button {
+                padding: 8px 16px; /* Smaller button for very small screens */
+                font-size: 0.8rem; /* Smaller font size for very small screens */
+            }
+
+            .result {
+                font-size: 0.9rem; /* Smaller font size for very small screens */
+                padding: 0.6rem; /* Smaller padding for very small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Side: Project Description -->
+        <div class="description">
+            <h1>Landslide Prediction System</h1>
+            <p>
+                This project aims to predict the likelihood of landslides based on environmental factors such as rainfall, soil moisture, slope angle, and vibration intensity. By analyzing these parameters, the system provides a probability score indicating the risk of a landslide occurring in a specific area.
+            </p>
+            <p>
+                The prediction model is powered by machine learning algorithms trained on historical landslide data. Enter the required parameters on the right to get a real-time prediction.
+            </p>
+        </div>
+
+        <!-- Right Side: Form and Prediction -->
+        <div class="form-section">
+            <form id="prediction-form">
+                <div class="form-group">
+                    <label for="rainfall">Rainfall (mm):</label>
+                    <input type="number" id="rainfall" name="rainfall" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="soil-moisture">Soil Moisture (0 to 1):</label>
+                    <input type="number" id="soil-moisture" name="soil-moisture" step="0.01" min="0" max="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="slope-angle">Slope Angle (degrees):</label>
+                    <input type="number" id="slope-angle" name="slope-angle" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="vibration">Vibration Intensity (0 to 1):</label>
+                    <input type="number" id="vibration" name="vibration" step="0.01" min="0" max="1" required>
+                </div>
+                <button type="submit">Predict</button>
+            </form>
+            <div id="result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle form submission
+        document.getElementById("prediction-form").addEventListener("submit", async (event) => {
+            event.preventDefault(); // Prevent form from submitting the traditional way
+
+            // Get form data
+            const rainfall = parseFloat(document.getElementById("rainfall").value);
+            const soilMoisture = parseFloat(document.getElementById("soil-moisture").value);
+            const slopeAngle = parseFloat(document.getElementById("slope-angle").value);
+            const vibration = parseFloat(document.getElementById("vibration").value);
+
+            // Prepare data for the API
+            const data = {
+                rainfall: rainfall,
+                soil_moisture: soilMoisture,
+                slope_angle: slopeAngle,
+                vibration: vibration
+            };
+
+            // Send POST request to the Flask API
+            try {
+                const response = await fetch("http://127.0.0.1:5000/predict", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                document.getElementById("result").innerHTML = `
+                    <strong>Prediction:</strong> ${result.prediction === 1 ? "Landslide Likely" : "No Landslide"}<br>
+                    <strong>Probability:</strong> ${(result.probability * 100).toFixed(2)}%
+                `;
+            } catch (error) {
+                document.getElementById("result").innerHTML = `<strong>Error:</strong> ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
