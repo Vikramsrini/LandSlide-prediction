@@ -148,6 +148,43 @@ h1 {
     70% { box-shadow: 0 0 0 10px rgba(255,255,255,0); }
     100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
 }
+        @media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+        padding: 10px;
+    }
+
+    .sensor-value {
+        font-size: 2rem;
+    }
+
+    .sensor-label {
+        font-size: 0.95rem;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 10px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .gauge {
+        height: 150px;
+    }
+
+    #historyChart {
+        height: 260px !important;
+    }
+
+    .risk-indicator {
+        font-size: 1.2rem;
+    }
+}
+
 
     </style>
 </head>
